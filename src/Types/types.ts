@@ -6,5 +6,8 @@ type DownloadPhoto = {
 }
 
 type DowlnoadAlbums = {
-    
+    id: number,
+    thumbnailUrl: string,
+    title: string,
+    url : string;
 }
