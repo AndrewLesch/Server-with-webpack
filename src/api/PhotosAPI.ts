@@ -1,5 +1,3 @@
-// класс где будут методы с апи всякими
-
 import axios from "axios";
 
 export default class PhotosApi {

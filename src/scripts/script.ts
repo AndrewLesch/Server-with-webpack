@@ -8,7 +8,7 @@ let currentPage: number = 1;
 
 const container: HTMLElement = document.getElementById('container');
 const albumsRow: HTMLElement = document.getElementById('albums-row');
-container.appendChild(albumsRow)
+container.appendChild(albumsRow);
 
 const leftButton: HTMLElement = document.getElementById('left-button');
 const rightButton: HTMLElement = document.getElementById('right-button');
@@ -34,7 +34,6 @@ function handleRightClick() {
 function renderAlbums() {
     let lowerBound: number = 8 * (currentPage - 1);
     let upperBound: number = 8 * currentPage;
-    console.log(currentPage);
     albums.slice(lowerBound, upperBound).forEach(item => createAlbumsRow(item));
     updateNavigation();
 }
@@ -58,15 +57,16 @@ function createAlbumsRow(item: DowlnoadAlbum) {
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
     
-    console.log(albumsRow.children.length);
     if (albumsRow.children.length >= 8) {
         console.log("aa");
         albumsRow.removeChild(albumsRow.firstElementChild)
     }
 
-    albumsRow.appendChild(col);
     colCard.classList.add('card', 'mt-3');
+    albumTitle.classList.add('mx-auto');
+    albumTitle.style.minHeight = '60px';
     
+    albumsRow.appendChild(col);
     col.append(colCard);
 
     albumTitle.textContent = item.title;
@@ -83,7 +83,6 @@ function createAlbumsRow(item: DowlnoadAlbum) {
 
     link.append(img);
     link.classList.add('mx-auto');
-    albumTitle.classList.add('mx-auto')
     colCard.append(link);
 }
 
