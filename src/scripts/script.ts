@@ -1,29 +1,28 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { debugPort } from 'process';
+
 import AlbumsApi from '../api/AlbumsAPI';
+
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
-let albums : DowlnoadAlbums[] = [];
+let albums: DowlnoadAlbum[] = [];
 let currentPage: number = 1;
 
-const container = document.getElementById('container');
-const albumsRow = document.getElementById('albums-row');
+const container: HTMLElement = document.getElementById('container');
+const albumsRow: HTMLElement = document.getElementById('albums-row');
 container.appendChild(albumsRow)
-const leftButton = document.getElementById('left-button');
-const rightButton = document.getElementById('right-button');
 
+const leftButton: HTMLElement = document.getElementById('left-button');
+const rightButton: HTMLElement = document.getElementById('right-button');
 
 leftButton.addEventListener('click', handleLeftClick);
 rightButton.addEventListener('click', handleRightClick);
 
 AlbumsApi.getAlbums().then(resolve => {
     albums = resolve;
-    console.log(albums);
     renderAlbums();
 });
 
 function handleLeftClick() {
     currentPage = currentPage - 1;
-    console.log(currentPage);
     renderAlbums();
 }
 
@@ -54,10 +53,10 @@ function updateNavigation() {
     }
 }
 
-function createAlbumsRow(item) {
-    const col = document.createElement('div');
-    const colCard = document.createElement('div');
-    const albumTitle = document.createElement('h5');
+function createAlbumsRow(item: DowlnoadAlbum) {
+    const col: HTMLDivElement = document.createElement('div');
+    const colCard: HTMLDivElement = document.createElement('div');
+    const albumTitle: HTMLHeadingElement = document.createElement('h5');
     
     console.log(albumsRow.children.length);
     if (albumsRow.children.length >= 8) {
@@ -66,22 +65,25 @@ function createAlbumsRow(item) {
     }
 
     albumsRow.appendChild(col);
-    colCard.classList.add('card', 'mx-auto')
+    colCard.classList.add('card', 'mt-3');
+    
     col.append(colCard);
 
     albumTitle.textContent = item.title;
     colCard.append(albumTitle);
 
-    const link = document.createElement('a');
+    const link: HTMLAnchorElement = document.createElement('a');
     link.setAttribute('href', `./photos.html?albumId=${item.id}`);
     link.setAttribute('target', '_blank');
 
-    let img = new Image();
-    img.src = '../assets/album_icon.jpeg';
+    let img: HTMLImageElement = new Image();
+    img.src = '../assets/album_icon.jpg';
     img.width = 200;
     img.height = 200;
 
     link.append(img);
+    link.classList.add('mx-auto');
+    albumTitle.classList.add('mx-auto')
     colCard.append(link);
 }
 
