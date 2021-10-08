@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import AlbumsApi from '../api/AlbumsAPI';
 
+
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: DowlnoadAlbum[] = [];
 let currentPage: number = 1;
@@ -65,7 +66,7 @@ function createAlbumsRow(item: DowlnoadAlbum) {
     colCard.classList.add('card', 'mt-3');
     albumTitle.classList.add('mx-auto');
     albumTitle.style.minHeight = '60px';
-    
+
     albumsRow.appendChild(col);
     col.append(colCard);
 
@@ -73,7 +74,7 @@ function createAlbumsRow(item: DowlnoadAlbum) {
     colCard.append(albumTitle);
 
     const link: HTMLAnchorElement = document.createElement('a');
-    link.setAttribute('href', `./photos.html?albumId=${item.id}`);
+    link.setAttribute('href', `../src/photos.html?albumId=${item.id}`);
     link.setAttribute('target', '_blank');
 
     let img: HTMLImageElement = new Image();
