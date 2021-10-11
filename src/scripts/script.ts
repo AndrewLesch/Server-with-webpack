@@ -6,16 +6,43 @@ const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
 let currentPage: number = 1;
 
-const container: HTMLElement = document.getElementById('container');
-const albumsRow: HTMLElement = document.getElementById('albums-row');
-container.appendChild(albumsRow);
 
-const leftButton: HTMLElement = document.getElementById('left-button');
-const rightButton: HTMLElement = document.getElementById('right-button');
 
-leftButton.addEventListener('click', handleLeftClick);
-rightButton.addEventListener('click', handleRightClick);
+function createAlbumPage() {
+    const root: HTMLElement = document.getElementById('root');
+    const btnContainer: HTMLElement = document.createElement('div');
+    btnContainer.classList.add('btn-group');
+    btnContainer.setAttribute('role', 'group');
+    btnContainer.setAttribute('aria-label', 'Basic outlined example');
 
+    const leftButton: HTMLElement = document.createElement('button');
+    leftButton.classList.add('btn', 'btn-outline-primary');
+    leftButton.setAttribute('type', 'button');
+    leftButton.setAttribute('id', 'left-button');
+    leftButton.innerText = 'Left';
+
+    const rightButton: HTMLElement = document.createElement('button');
+    rightButton.classList.add('btn', 'btn-outline-primary');
+    rightButton.setAttribute('type', 'button');
+    rightButton.setAttribute('id', 'right-button');
+    rightButton.innerText = 'Right';
+
+    leftButton.addEventListener('click', handleLeftClick);
+    rightButton.addEventListener('click', handleRightClick);
+
+    const container: HTMLElement = document.createElement('div');
+    container.classList.add('container-xxl', 'pt-5');
+
+    const albumsRow: HTMLElement = document.createElement('div');
+    albumsRow.setAttribute('id', 'album-row')
+    albumsRow.classList.add('row', 'row-cols-4');
+    container.appendChild(albumsRow);
+
+    root.appendChild(btnContainer);
+    root.appendChild(container);
+    btnContainer.append(leftButton,rightButton);
+}
+createAlbumPage();
 AlbumsApi.getAlbums().then(resolve => {
     albums = resolve;
     renderAlbums();
@@ -39,6 +66,8 @@ function renderAlbums() {
 }
 
 function updateNavigation() {
+    const leftButton: HTMLElement = document.getElementById('left-button');
+    const rightButton: HTMLElement = document.getElementById('right-button');
     if (currentPage === 1) {
         leftButton.setAttribute('disabled', 'disabled');
     } else {
@@ -56,15 +85,15 @@ function createAlbumsRow(item: Album) {
     const col: HTMLDivElement = document.createElement('div');
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
-    
+    const albumsRow: HTMLElement = document.getElementById('album-row')
     if (albumsRow.children.length >= 8) {
         console.log("aa");
         albumsRow.removeChild(albumsRow.firstElementChild)
     }
 
-    colCard.classList.add('card', 'mt-3');
+    colCard.classList.add('card', 'mt-5');
     albumTitle.classList.add('mx-auto');
-    albumTitle.style.minHeight = '60px';
+    albumTitle.style.minHeight = '80px';
 
     albumsRow.appendChild(col);
     col.append(colCard);

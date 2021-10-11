@@ -9,5 +9,5 @@ type Album = {
     id: number,
     thumbnailUrl: string,
     title: string,
-    url : string;
+    url : string,
 }
