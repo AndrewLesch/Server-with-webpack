@@ -1,11 +1,11 @@
-type DownloadPhoto = {
+type Photo = {
     albumId: number,
     id: number,
     thumbnailUrl: string,
     title: string,
 }
 
-type DowlnoadAlbum = {
+type Album = {
     id: number,
     thumbnailUrl: string,
     title: string,

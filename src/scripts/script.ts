@@ -1,10 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import AlbumsApi from '../api/AlbumsAPI';
-
+import AlbumsApi from '../api/AlbumsApi';
 
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
-let albums: DowlnoadAlbum[] = [];
+let albums: Album[] = [];
 let currentPage: number = 1;
 
 const container: HTMLElement = document.getElementById('container');
@@ -53,7 +52,7 @@ function updateNavigation() {
     }
 }
 
-function createAlbumsRow(item: DowlnoadAlbum) {
+function createAlbumsRow(item: Album) {
     const col: HTMLDivElement = document.createElement('div');
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');

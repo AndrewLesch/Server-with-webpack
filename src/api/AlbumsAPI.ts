@@ -1,14 +1,14 @@
 import axios from "axios";
+import { baseUrl } from "./main_url";
 
 export default class AlbumsApi {
-    static baseUrl: string = "https://jsonplaceholder.typicode.com/albums";
+    static url: string = baseUrl;
 
     static getAlbums() {
-        return axios.get<DowlnoadAlbum[]>(`${this.baseUrl}`).then(response => response.data);
-            
+        return axios.get<Album[]>(`${this.url}`).then(response => response.data);
     }
 
-    static getAlbum(albumId: number) {
-        return axios.get<DowlnoadAlbum[]>(`${this.baseUrl}/${albumId}`).then(response => response.data);
+    static getAlbumById(id: number) {
+        return axios.get<Album>(`${this.url}/${id}`).then(response => response.data);
     }
 }
