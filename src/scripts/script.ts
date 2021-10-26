@@ -1,11 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { brotliDecompressSync } from 'zlib';
 
 import AlbumsApi from '../api/AlbumsApi';
+import { renderPhoto } from './photos';
 
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
 let currentPage: number = 1;
-
+let albumStageUrl = `http://127.0.0.1:5500/dist/index.html`;
 
 
 function createAlbumPage() {
@@ -85,9 +87,9 @@ function createAlbumsRow(item: Album) {
     const col: HTMLDivElement = document.createElement('div');
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
-    const albumsRow: HTMLElement = document.getElementById('album-row')
+    const albumsRow: HTMLElement = document.getElementById('album-row');
+
     if (albumsRow.children.length >= 8) {
-        console.log("aa");
         albumsRow.removeChild(albumsRow.firstElementChild)
     }
 
@@ -102,8 +104,14 @@ function createAlbumsRow(item: Album) {
     colCard.append(albumTitle);
 
     const link: HTMLAnchorElement = document.createElement('a');
-    link.setAttribute('href', `../src/photos.html?albumId=${item.id}`);
-    link.setAttribute('target', '_blank');
+
+    link.onclick = function () {
+        let state = `../src/photos.html?albumId=${item.id}`;
+        let title = 'photos';
+        let url = `../src/photos.html?albumId=${item.id}`;
+        window.history.pushState(state,title,url);
+        renderPhoto();
+    }
 
     let img: HTMLImageElement = new Image();
     img.src = '../assets/album_icon.jpg';
@@ -115,3 +123,17 @@ function createAlbumsRow(item: Album) {
     colCard.append(link);
 }
 
+window.onpopstate = function () {
+    if (document.URL === albumStageUrl) {
+        const root: HTMLElement = document.getElementById('root');
+        root.innerHTML = '';
+        createAlbumPage();
+        AlbumsApi.getAlbums().then(resolve => {
+            albums = resolve;
+            renderAlbums();
+        });
+    }
+    else {
+        renderPhoto();
+    }
+}
