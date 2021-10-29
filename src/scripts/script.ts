@@ -109,14 +109,15 @@ function createAlbumsRow(item: Album) {
         let state = `../src/photos.html?albumId=${item.id}`;
         let title = 'photos';
         let url = `../src/photos.html?albumId=${item.id}`;
+        document.title = 'photos';
         window.history.pushState(state,title,url);
         renderPhoto();
     }
 
     let img: HTMLImageElement = new Image();
     img.src = '../assets/album_icon.jpg';
-    img.width = 200;
-    img.height = 200;
+    img.width = 150;
+    img.height = 150;
 
     link.append(img);
     link.classList.add('mx-auto');
@@ -131,6 +132,7 @@ window.onpopstate = function () {
         AlbumsApi.getAlbums().then(resolve => {
             albums = resolve;
             renderAlbums();
+            document.title = 'Albums';
         });
     }
     else {
