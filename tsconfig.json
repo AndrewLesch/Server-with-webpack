@@ -12,6 +12,6 @@
         "*.ts": ["*"]
       },
     },
-    "include": ["src/**/*", "APIS/AlbumsAPI.ts", "APIS/PhotosAPI.ts", "src/types/types.ts", "src/scripts/script.ts"] // Что именно компилировать
+    "include": ["src/**/*", "APIS/AlbumsAPI.ts", "APIS/PhotosAPI.ts", "src/types/types.ts", "src/scripts/index.ts","globals.d.ts"] // Что именно компилировать
     
   }

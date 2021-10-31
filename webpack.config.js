@@ -2,21 +2,35 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const pages = ['index','photos']
+
+
 module.exports = {
     mode : 'development',
-    entry : {
-        main :'./src/scripts/script.ts',
-    },
+    entry : pages.reduce((config, page) => {
+      config[page] = `./src/scripts/${page}.ts`;
+      return config;
+    }, {}),
     output : {
-        filename : 'bundle.js',
+        filename : '[name].js',
         path : path.resolve(__dirname, 'dist')
     },
-    plugins : [
-        new HtmlWebpackPlugin({
-            template : './src/index.html'
-        }),
-        new MiniCssExtractPlugin(),
-    ],
+    plugins : [new MiniCssExtractPlugin()].concat(
+      pages.map(
+        (page) =>
+          new HtmlWebpackPlugin({
+            inject: true,
+            template: `./src/${page}.html`,
+            filename: `./src/${page}.html`,
+            chunks: [page],
+          })
+      )
+    ),
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+      },
+    },
     module: {
         rules: [
           { test: /\.tsx?$/, loader: "ts-loader" },
@@ -25,7 +39,14 @@ module.exports = {
             test: /\.css$/i,
             use: [MiniCssExtractPlugin.loader, "css-loader"],
           },
-          
+          {
+            test: /\.(png|jpe?g|gif)$/i,
+            use: [
+              {
+                loader: 'file-loader',
+              },
+            ],
+          },
         ],
       },
       devServer: {

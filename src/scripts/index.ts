@@ -1,13 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { brotliDecompressSync } from 'zlib';
 
 import AlbumsApi from '../api/AlbumsApi';
-import { renderPhoto } from './photos';
+import albumImg from '../assets/album_icon.jpg';
 
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
 let currentPage: number = 1;
-let albumStageUrl = `http://127.0.0.1:5500/dist/index.html`;
 
 
 function createAlbumPage() {
@@ -44,7 +42,9 @@ function createAlbumPage() {
     root.appendChild(container);
     btnContainer.append(leftButton,rightButton);
 }
+
 createAlbumPage();
+
 AlbumsApi.getAlbums().then(resolve => {
     albums = resolve;
     renderAlbums();
@@ -70,6 +70,7 @@ function renderAlbums() {
 function updateNavigation() {
     const leftButton: HTMLElement = document.getElementById('left-button');
     const rightButton: HTMLElement = document.getElementById('right-button');
+
     if (currentPage === 1) {
         leftButton.setAttribute('disabled', 'disabled');
     } else {
@@ -104,38 +105,15 @@ function createAlbumsRow(item: Album) {
     colCard.append(albumTitle);
 
     const link: HTMLAnchorElement = document.createElement('a');
-
-    link.onclick = function () {
-        let state = `../src/photos.html?albumId=${item.id}`;
-        let title = 'photos';
-        let url = `../src/photos.html?albumId=${item.id}`;
-        document.title = 'photos';
-        window.history.pushState(state,title,url);
-        renderPhoto();
-    }
+    link.setAttribute('href', `./photos.html?albumId=${item.id}`);
+    link.setAttribute('target', '_blank');
 
     let img: HTMLImageElement = new Image();
-    img.src = '../assets/album_icon.jpg';
+    img.src = albumImg;
     img.width = 150;
     img.height = 150;
 
     link.append(img);
     link.classList.add('mx-auto');
     colCard.append(link);
-}
-
-window.onpopstate = function () {
-    if (document.URL === albumStageUrl) {
-        const root: HTMLElement = document.getElementById('root');
-        root.innerHTML = '';
-        createAlbumPage();
-        AlbumsApi.getAlbums().then(resolve => {
-            albums = resolve;
-            renderAlbums();
-            document.title = 'Albums';
-        });
-    }
-    else {
-        renderPhoto();
-    }
 }

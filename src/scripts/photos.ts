@@ -1,9 +1,10 @@
 import PhotosApi from "../api/PhotosApi";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 let photos: Photo[] = [];
-let queryString = '';
-let albumId;
 let currentPage = 1;
+const queryString = window.location.search;
+const albumId = parseInt(queryString.replace(/\D/g,''));
 
 const NUMBER_OF_PHOTOS_ON_PAGE = 8;
 
@@ -37,12 +38,6 @@ function updateNavigation () {
     }
 }
 
-
-function getString() {
-    queryString = window.location.search;
-    albumId = parseInt(queryString.replace(/\D/g,''));
-}
-
 function getPhotosPage(photo: Photo) {
     return `
     <div>
@@ -60,7 +55,6 @@ function getPhotosPage(photo: Photo) {
 }
 
 export function renderPhoto () {
-    getString()
     PhotosApi.getPhotosByAlbumId(albumId).then(resolve => {
         photos = resolve;
         let lowerBound: number = 8 * (currentPage - 1);
@@ -77,3 +71,4 @@ export function renderPhoto () {
         updateNavigation();
     });
 }
+renderPhoto();
