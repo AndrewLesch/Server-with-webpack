@@ -21,7 +21,7 @@ module.exports = {
           new HtmlWebpackPlugin({
             inject: true,
             template: `./src/${page}.html`,
-            filename: `./src/${page}.html`,
+            filename: `${page}.html`,
             chunks: [page],
           })
       )
