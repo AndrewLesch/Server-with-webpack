@@ -1,6 +1,7 @@
-import PhotosApi from "../api/PhotosApi";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Toast } from 'bootstrap';
+import * as bootstrap from 'bootstrap'
+
+import PhotosApi from "../api/PhotosApi";
 
 let photos: Photo[] = [];
 let currentPage = 1;
@@ -31,10 +32,10 @@ rightButton.innerText = 'Right';
 const container: HTMLElement = document.createElement('div');
 container.classList.add('container-xxl', 'pt-5');
 
-const albumsRow: HTMLElement = document.createElement('div');
-albumsRow.setAttribute('id', 'album-row')
-albumsRow.classList.add('row', 'row-cols-4');
-container.appendChild(albumsRow);
+const photosRow: HTMLElement = document.createElement('div');
+photosRow.setAttribute('id', 'photo-row')
+photosRow.classList.add('row', 'row-cols-4');
+container.appendChild(photosRow);
 
 root.appendChild(btnContainer);
 root.appendChild(container);
@@ -86,51 +87,49 @@ function renderPhoto() {
 }
 
 function createAndFillCard(item) {
-    const col: HTMLDivElement = document.createElement('div');
     const colCard: HTMLDivElement = document.createElement('div');
-    const albumTitle: HTMLHeadingElement = document.createElement('h5');
-    const albumsRow: HTMLElement = document.getElementById('album-row');
+    const photoTitle: HTMLHeadingElement = document.createElement('h5');
+    const photoRow: HTMLElement = document.getElementById('photo-row');
     const photoAndButtonContainer = document.createElement('div')
     photoAndButtonContainer.classList.add('position-relative', 'mx-auto');
     photoAndButtonContainer.style.width = '150px';
     photoAndButtonContainer.style.height = '150px';
 
-    if (albumsRow.children.length >= 8) {
-        albumsRow.removeChild(albumsRow.firstElementChild)
+    if (photoRow.children.length >= 8) {
+        photoRow.removeChild(photoRow.firstElementChild)
     }
 
     colCard.classList.add('card', 'mt-5');
     colCard.setAttribute('id',`${item.id}`);
-    albumTitle.classList.add('mx-auto');
-    albumTitle.style.minHeight = '80px';
-    
+    photoTitle.classList.add('mx-auto');
+    photoTitle.style.minHeight = '80px';
 
-    albumsRow.appendChild(col);
-    col.append(colCard);
-
-    albumTitle.textContent = item.title;
-    colCard.append(albumTitle);
+    photoRow.appendChild(colCard);
+    photoTitle.textContent = item.title;
+    colCard.append(photoTitle);
     colCard.append(photoAndButtonContainer);
-
-    const link: HTMLAnchorElement = document.createElement('a');
-    link.setAttribute('target', '_blank');
 
     let img: HTMLImageElement = new Image();
     img.src = item.url;
     img.width = 150;
     img.height = 150;
 
-    link.append(img);
-    link.classList.add('mx-auto');
-    colCard.append(link);
-
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'x';
     deleteButton.classList.add('btn', 'btn-dark', 'h-25', 'w-25', 'position-absolute', 'top-0', 'end-0');
+    deleteButton.setAttribute('id', 'delete-photo-button')
+    deleteButton.onclick = deletePhoto(item);
     photoAndButtonContainer.append(img);
     photoAndButtonContainer.append(deleteButton);
 
-    deleteButton.onclick = deletePhoto(item);
+    var toastLiveExample = document.getElementById('liveToast')
+    if (deleteButton) {
+      deleteButton.addEventListener('click', function () {
+        var toast = new bootstrap.Toast(toastLiveExample)
+    
+        toast.show()
+      })
+    }
 }
 
 function deletePhoto(item) {
@@ -138,15 +137,15 @@ function deletePhoto(item) {
         PhotosApi.deletePhotoById(item.id).then(
          function(){
              const deletePhoto = document.getElementById(item.id);
-             const albumsRow: HTMLElement = document.getElementById('album-row')
+             const photoRow: HTMLElement = document.getElementById('photo-row')
              
-             albumsRow.removeChild(deletePhoto);
+             photoRow.removeChild(deletePhoto);
  
              const idDelete = photos.findIndex( albumItem  => albumItem.id === item.id);
              photos.splice(idDelete, 1);
- 
+             console.log(deletePhoto);
              renderPhoto();
          }
      )
     }
- }
+}

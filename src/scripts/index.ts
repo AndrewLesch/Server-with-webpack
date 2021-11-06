@@ -7,7 +7,6 @@ const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
 let currentPage: number = 1;
 
-
 function createAlbumPage() {
     const root: HTMLElement = document.getElementById('root');
     const btnContainer: HTMLElement = document.createElement('div');
@@ -85,7 +84,6 @@ function updateNavigation() {
 }
 
 function createAlbumsRow(item: Album) {
-    const col: HTMLDivElement = document.createElement('div');
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
     const albumsRow: HTMLElement = document.getElementById('album-row');
@@ -98,9 +96,7 @@ function createAlbumsRow(item: Album) {
     albumTitle.classList.add('mx-auto');
     albumTitle.style.minHeight = '80px';
 
-    albumsRow.appendChild(col);
-    col.append(colCard);
-
+    albumsRow.appendChild(colCard);
     albumTitle.textContent = item.title;
     colCard.append(albumTitle);
 

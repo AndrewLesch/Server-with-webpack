@@ -7,6 +7,6 @@ export default class PhotosApi {
     }
 
     static deletePhotoById(id: number) {
-        return axios.delete(`https://jsonplaceholder.typicode.com/photos/${id}`)
+        return axios.delete(`https://jsonplaceholder.typicode.com/photos/${id}`);
     }
 }
