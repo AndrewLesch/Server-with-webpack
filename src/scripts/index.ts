@@ -2,52 +2,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import AlbumsApi from '../api/AlbumsApi';
 import albumImg from '../assets/album_icon.jpg';
+import createPage from './pageComponent';
 
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
 let currentPage: number = 1;
 
-function createAlbumPage() {
-    const root: HTMLElement = document.getElementById('root');
-    const btnContainer: HTMLElement = document.createElement('div');
-    btnContainer.classList.add('btn-group');
-    btnContainer.setAttribute('role', 'group');
-    btnContainer.setAttribute('aria-label', 'Basic outlined example');
-
-    const leftButton: HTMLElement = document.createElement('button');
-    leftButton.classList.add('btn', 'btn-outline-primary');
-    leftButton.setAttribute('type', 'button');
-    leftButton.setAttribute('id', 'left-button');
-    leftButton.innerText = 'Left';
-
-    const rightButton: HTMLElement = document.createElement('button');
-    rightButton.classList.add('btn', 'btn-outline-primary');
-    rightButton.setAttribute('type', 'button');
-    rightButton.setAttribute('id', 'right-button');
-    rightButton.innerText = 'Right';
-
-    leftButton.addEventListener('click', handleLeftClick);
-    rightButton.addEventListener('click', handleRightClick);
-
-    const container: HTMLElement = document.createElement('div');
-    container.classList.add('container-xxl', 'pt-5');
-
-    const albumsRow: HTMLElement = document.createElement('div');
-    albumsRow.setAttribute('id', 'album-row')
-    albumsRow.classList.add('row', 'row-cols-4');
-    container.appendChild(albumsRow);
-
-    root.appendChild(btnContainer);
-    root.appendChild(container);
-    btnContainer.append(leftButton,rightButton);
-}
-
-createAlbumPage();
-
-AlbumsApi.getAlbums().then(resolve => {
-    albums = resolve;
+AlbumsApi.getAlbums().then(response => {
+    albums = response;
     renderAlbums();
 });
+
+createPage('Album');
 
 function handleLeftClick() {
     currentPage = currentPage - 1;
@@ -67,9 +33,12 @@ function renderAlbums() {
 }
 
 function updateNavigation() {
-    const leftButton: HTMLElement = document.getElementById('left-button');
-    const rightButton: HTMLElement = document.getElementById('right-button');
+    const leftButton = document.getElementById('left-button')
+    const rightButton = document.getElementById('right-button')
 
+    leftButton.addEventListener('click', handleLeftClick);
+    rightButton.addEventListener('click', handleRightClick);
+    
     if (currentPage === 1) {
         leftButton.setAttribute('disabled', 'disabled');
     } else {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { baseUrl } from "./main_url";
+import { baseUrl } from "./apiConstants";
 
 export default class AlbumsApi {
     static getAlbums() {
