@@ -11,7 +11,6 @@ const queryString = window.location.search;
 const albumId = parseInt(queryString.replace(/\D/g,''));
 const NUMBER_OF_PHOTOS_ON_PAGE = 8;
 
-
 createPage('Photo');
 
 function handleLeftClick() {
@@ -43,15 +42,20 @@ function updateNavigation () {
         rightButton.removeAttribute('disabled');
     }
 }
+
 PhotosApi.getPhotosByAlbumId(albumId).then(resolve => {
     photos = resolve;
     renderPhoto();
 });
 
 function renderPhoto() {
-    let lowerBound = NUMBER_OF_PHOTOS_ON_PAGE * (currentPage - 1);
-    let upperBound = NUMBER_OF_PHOTOS_ON_PAGE * currentPage;
+    const photoRow: HTMLElement = document.getElementById('photo-row');
+    while (photoRow.lastElementChild) {
+        photoRow.removeChild(photoRow.lastElementChild);
+      }
 
+    let lowerBound = NUMBER_OF_PHOTOS_ON_PAGE * (currentPage - 1);
+    let upperBound = NUMBER_OF_PHOTOS_ON_PAGE * currentPage
     photos.slice(lowerBound, upperBound).forEach(item => createAndFillCard(item));
     updateNavigation();
 }
@@ -65,19 +69,15 @@ function createAndFillCard(item) {
     photoAndButtonContainer.style.width = '150px';
     photoAndButtonContainer.style.height = '150px';
 
-    if (photoRow.children.length >= 8) {
-        photoRow.removeChild(photoRow.firstElementChild)
-    }
-
     colCard.classList.add('card', 'mt-5');
     colCard.setAttribute('id',`${item.id}`);
-    photoTitle.classList.add('mx-auto');
+    photoTitle.classList.add('mx-auto','text-center');
     photoTitle.style.minHeight = '80px';
 
     photoRow.appendChild(colCard);
     photoTitle.textContent = item.title;
-    colCard.append(photoTitle);
     colCard.append(photoAndButtonContainer);
+    colCard.append(photoTitle);
 
     const link: HTMLAnchorElement = document.createElement('a');
     link.setAttribute('href', `${item.url}`);

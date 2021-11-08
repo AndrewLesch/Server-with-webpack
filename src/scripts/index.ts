@@ -57,17 +57,16 @@ function createAlbumsRow(item: Album) {
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
     const albumsRow: HTMLElement = document.getElementById('album-row');
 
-    if (albumsRow.children.length >= 8) {
+    if (albumsRow.children.length >= NUMBER_OF_ALBUMS_ON_PAGE) {
         albumsRow.removeChild(albumsRow.firstElementChild)
     }
 
     colCard.classList.add('card', 'mt-5');
-    albumTitle.classList.add('mx-auto');
+    albumTitle.classList.add('mx-auto', 'text-center');
     albumTitle.style.minHeight = '80px';
 
     albumsRow.appendChild(colCard);
     albumTitle.textContent = item.title;
-    colCard.append(albumTitle);
 
     const link: HTMLAnchorElement = document.createElement('a');
     link.setAttribute('href', `./photos.html?albumId=${item.id}`);
@@ -81,4 +80,5 @@ function createAlbumsRow(item: Album) {
     link.append(img);
     link.classList.add('mx-auto');
     colCard.append(link);
+    colCard.append(albumTitle);
 }
