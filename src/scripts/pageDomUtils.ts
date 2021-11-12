@@ -1,4 +1,4 @@
-export default function createPage(currentPage) {
+export default function createPage(pageName: string) {
     const root: HTMLElement = document.getElementById('root');
     const btnContainer: HTMLElement = document.createElement('div');
     btnContainer.classList.add('btn-group');
@@ -19,18 +19,10 @@ export default function createPage(currentPage) {
     const container: HTMLElement = document.createElement('div');
     container.classList.add('container-xxl', 'pt-5');
 
-    if (currentPage === 'Photo') {
-        const photosRow: HTMLElement = document.createElement('div');
-        photosRow.setAttribute('id', 'photo-row')
-        photosRow.classList.add('row', 'row-cols-4');
-        container.appendChild(photosRow);
-    } else {
-        const albumRow: HTMLElement = document.createElement('div');
-        albumRow.setAttribute('id', 'album-row')
-        albumRow.classList.add('row', 'row-cols-4');
-        container.appendChild(albumRow);
-
-    }
+    const pageRow: HTMLElement = document.createElement('div');
+    pageRow.setAttribute('id', `${pageName}-row`);
+    pageRow.classList.add('row', 'row-cols-4');
+    container.appendChild(pageRow);
     
     root.appendChild(btnContainer);
     root.appendChild(container);

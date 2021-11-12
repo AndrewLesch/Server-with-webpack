@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import AlbumsApi from '../api/AlbumsApi';
 import albumImg from '../assets/album_icon.jpg';
-import createPage from './pageComponent';
+import createPage from './pageDomUtils';
 
 const NUMBER_OF_ALBUMS_ON_PAGE: number = 8;
 let albums: Album[] = [];
@@ -13,7 +13,7 @@ AlbumsApi.getAlbums().then(response => {
     renderAlbums();
 });
 
-createPage('Album');
+createPage('album');
 
 function handleLeftClick() {
     currentPage = currentPage - 1;
@@ -33,8 +33,8 @@ function renderAlbums() {
 }
 
 function updateNavigation() {
-    const leftButton = document.getElementById('left-button')
-    const rightButton = document.getElementById('right-button')
+    const leftButton: HTMLElement= document.getElementById('left-button')
+    const rightButton: HTMLElement = document.getElementById('right-button')
 
     leftButton.addEventListener('click', handleLeftClick);
     rightButton.addEventListener('click', handleRightClick);
@@ -52,13 +52,13 @@ function updateNavigation() {
     }
 }
 
-function createAlbumsRow(item: Album) {
+function createAlbumsRow(album: Album) {
     const colCard: HTMLDivElement = document.createElement('div');
     const albumTitle: HTMLHeadingElement = document.createElement('h5');
     const albumsRow: HTMLElement = document.getElementById('album-row');
 
     if (albumsRow.children.length >= NUMBER_OF_ALBUMS_ON_PAGE) {
-        albumsRow.removeChild(albumsRow.firstElementChild)
+        albumsRow.removeChild(albumsRow.firstElementChild);
     }
 
     colCard.classList.add('card', 'mt-5');
@@ -66,10 +66,10 @@ function createAlbumsRow(item: Album) {
     albumTitle.style.minHeight = '80px';
 
     albumsRow.appendChild(colCard);
-    albumTitle.textContent = item.title;
+    albumTitle.textContent = album.title;
 
     const link: HTMLAnchorElement = document.createElement('a');
-    link.setAttribute('href', `./photos.html?albumId=${item.id}`);
+    link.setAttribute('href', `./photos.html?albumId=${album.id}`);
     link.setAttribute('target', '_blank');
 
     let img: HTMLImageElement = new Image();
